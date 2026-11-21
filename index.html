@@ -56,11 +56,10 @@ h1{font-size:25pt;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-he
 .focus{font-size:8.7pt;color:var(--dim);margin-top:2px}
 .head{padding:0 var(--cardpad) 3mm;border-bottom:2px solid var(--accent)}
 
-/* ছবি: ঘরের ভেতরে মুখের অংশ বড় করে দেখানো হয়
-   scale = কতটা বড়; transform-origin-এর ১ম মান বাড়ালে মুখ বাঁ দিকে সরে,
-   ২য় মান কমালে মাথার উপরে ফাঁকা জায়গা বাড়ে */
-.photo{width:46mm;height:55mm;border-radius:8px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15);overflow:hidden;margin:0 auto;flex-shrink:0}
-.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block;transform:scale(1.7);transform-origin:61% 16%}
+/* ছবি: পাসপোর্ট-ধাঁচের ছবি নিজেই ঠিক মাপে, তাই বড় করা হয় না; উপর থেকে বসানো
+   মুখ আরও বড় চাইলে: transform:scale(1.1);transform-origin:50% 25%; যোগ করুন */
+.photo{width:46mm;height:55mm;border-radius:8px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15);overflow:hidden;margin:0 auto;flex-shrink:0;background:#fff}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block}
 
 /* Sidebar content */
 .clist{list-style:none}
@@ -173,7 +172,7 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
 <!-- ================= PAGE 1 ================= -->
 <div class="page">
   <aside class="side">
-    <!-- ছবি: cv.html যে ফোল্ডারে, তার ভেতরের images/asifur.jpg -->
+    <!-- ছবি: এই ফাইল যে ফোল্ডারে, তার ভেতরের images/asifur.jpg -->
     <div class="photo"><img src="images/asifur.jpg" alt="Md. Asifur Rahman"></div>
 
     <section>
@@ -344,7 +343,7 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
       </table>
     </section>
 
-    <!-- References: অনলাইনে/portfolio-তে দিলে দুজনের ফোন-ইমেইল সবার কাছে খোলা থাকবে; তাঁদের সম্মতি নিন -->
+    <!-- References: অনলাইনে দিলে দুজনের ফোন-ইমেইল সবার কাছে খোলা থাকবে; তাঁদের সম্মতি নিন -->
     <section>
       <h2><span class="ico"><svg><use href="#i-users"/></svg></span>References</h2>
       <div class="refs">
