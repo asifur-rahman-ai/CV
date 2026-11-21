@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- title = PDF save করার সময় ফাইলের নাম -->
+<title>cv-md-asifur-rahman</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#152010;--body:#39432f;--dim:#687360;--accent:#1f5a00;
+      --side:#e4eddb;     /* বাম কলামের রং */
+      --card:#f3f7ee;     /* ডান দিকের সেকশন কার্ডের রং */
+      --tint2:#dfead4;--line:#d5dfca;
+      --pad:7mm;          /* পৃষ্ঠার উপর-নিচের মার্জিন */
+      --cardpad:2.7mm;    /* কার্ডের ভেতরের ফাঁকা জায়গা */
+      --gap:4.5mm;        /* সব সেকশনের মাঝে সমান ফাঁক (দুই পৃষ্ঠা, দুই কলাম) */
+      --bgap:1.4mm;       /* work bullet-গুলোর মাঝে ফাঁক (দুই পৃষ্ঠায় একই) */
+      --rowpad:1.5mm;}    /* Projects টেবিলের সারির ভেতরের উপর-নিচ ফাঁক */
+body{background:#e6e9e2;font-family:'Inter',system-ui,Arial,sans-serif;color:var(--body);font-size:9.2pt;line-height:1.45}
+a{color:inherit;text-decoration:none}
+svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* PDF বাটন: পৃষ্ঠার উপরে আলাদা জায়গায়, শুধু স্ক্রিনে; PDF/প্রিন্টে আসে না */
+.toolbar{width:210mm;max-width:100%;margin:8mm auto 0;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.toolbar button{font-family:'Inter',sans-serif;font-size:10.5pt;font-weight:700;color:#fff;background:var(--accent);border:0;border-radius:99px;padding:10px 22px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.toolbar button:hover{background:#2c7a04}
+.toolbar small{font-size:8.5pt;line-height:1.45;color:var(--body)}
+
+/* পৃষ্ঠা: সারির উচ্চতা A4-এ বাঁধা, তাই এক কলাম লম্বা হলে অন্য কলাম টেনে লম্বা হয় না */
+.page{width:210mm;height:297mm;margin:8mm auto;background:#fff;display:grid;grid-template-columns:64mm 1fr;grid-template-rows:minmax(0,1fr);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.12)}
+.side,.main{display:flex;flex-direction:column;justify-content:flex-start;gap:var(--gap);min-height:0}
+.side{background:var(--side);padding:var(--pad) 5mm}
+.main{padding:var(--pad) 7mm}
+
+/* সেকশন কার্ড */
+section{border-radius:3mm;padding:var(--cardpad)}
+.main section{background:var(--card);border:1px solid #e3ebd9}
+.side section{background:#fff}
+
+/* Justify */
+.just,ul.b li,.sk span,.profile{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+
+/* Section headings */
+h2{display:flex;align-items:center;gap:7px;font-size:9.6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 2.4mm}
+h2 .ico{width:6mm;height:6mm;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;flex-shrink:0}
+h2 .ico svg{width:3.4mm;height:3.4mm}
+h2::after{content:'';flex:1;height:1px;background:var(--line)}
+/* শিরোনামের পাশের ছোট নোট (যেমন Gallery-র লিংক) */
+h2 .h2note{font-size:7.3pt;font-weight:500;letter-spacing:0;text-transform:none;color:var(--dim);white-space:nowrap}
+h2 .h2note b,h2 .h2note a{color:var(--accent);font-family:Consolas,'Courier New',monospace;font-weight:600}
+
+/* Header */
+h1{font-size:25pt;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.05}
+.role{font-size:10.8pt;font-weight:700;color:var(--accent);margin-top:3px}
+.focus{font-size:8.7pt;color:var(--dim);margin-top:2px}
+.head{padding:0 var(--cardpad) 3mm;border-bottom:2px solid var(--accent)}
+
+/* ছবি: ঘরের ভেতরে মুখের অংশ বড় করে দেখানো হয়
+   scale = কতটা বড়; transform-origin-এর ১ম মান বাড়ালে মুখ বাঁ দিকে সরে,
+   ২য় মান কমালে মাথার উপরে ফাঁকা জায়গা বাড়ে */
+.photo{width:46mm;height:55mm;border-radius:8px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15);overflow:hidden;margin:0 auto;flex-shrink:0}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block;transform:scale(1.7);transform-origin:61% 16%}
+
+/* Sidebar content */
+.clist{list-style:none}
+.clist li{display:flex;gap:6px;align-items:flex-start;margin-bottom:1.5mm;font-size:8.2pt;color:var(--ink);word-break:break-word}
+.clist li:last-child{margin-bottom:0}
+.clist svg{width:3.5mm;height:3.5mm;color:var(--accent);flex-shrink:0;margin-top:1px}
+.sk,.item{margin-bottom:1.4mm}
+.sk:last-child,.item:last-child{margin-bottom:0}
+.sk b{display:block;font-size:8.5pt;color:var(--ink);font-weight:700}
+.sk span{display:block;font-size:8pt;color:var(--body)}
+.item b{display:block;font-size:8.5pt;color:var(--ink);font-weight:600;line-height:1.3}
+.item span{font-size:7.9pt;color:var(--dim)}
+.qr{text-align:center}
+.qr img{width:22mm;height:22mm;display:block;margin:0 auto 2mm}
+.qr b{display:block;font-size:8.5pt;color:var(--ink)}
+
+/* Language bar: --v = কতটা ভরা; দুই প্রান্তই গোল */
+.lbar{height:1.8mm;background:var(--tint2);border-radius:99px;margin-top:.9mm;overflow:hidden}
+.lbar i{display:block;height:100%;width:var(--v);background:var(--accent);border-radius:99px}
+
+/* Skill Levels ring: --v = ring কতটা ভরা (0–100); আর্কের মাথা গোল (round cap) */
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:2.4mm 1.5mm}
+.rg{text-align:center}
+.ring{--v:60;position:relative;width:10mm;height:10mm;margin:0 auto 1mm;display:grid;place-items:center}
+.ring .arc{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.ring .arc circle{fill:none;stroke-width:4}
+.ring .arc .tr{stroke:var(--tint2)}
+.ring .arc .fg{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:calc(var(--v) - 4) 100}
+.ring .ic{position:relative;width:4.2mm;height:4.2mm;color:var(--accent)}
+.rg b{display:block;font-size:7.3pt;color:var(--ink);font-weight:700;line-height:1.2}
+.rg span{display:block;font-size:6.7pt;color:var(--dim);line-height:1.2}
+.rnote{font-size:6.8pt;color:var(--dim);text-align:center;margin-top:1.2mm}
+
+/* Main content */
+.profile{font-size:9.4pt;color:var(--ink)}
+/* Key Results: ৪ কলাম, ২ সারি (৮টি tile) */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:2mm}
+.tile{background:#fff;border-left:3px solid var(--accent);border-radius:4px;padding:2mm 2.4mm}
+.tile b{display:block;font-size:13.5pt;font-weight:800;color:var(--accent);line-height:1.1}
+.tile span{font-size:7.5pt;color:var(--body);line-height:1.3;display:block;margin-top:2px}
+.job{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.job .t{font-size:10.4pt;font-weight:700;color:var(--ink);line-height:1.25}
+.job .c{font-size:9.1pt;font-weight:600;color:var(--accent)}
+.job .d{font-size:7.9pt;font-weight:600;color:var(--accent);background:var(--tint2);padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:1px}
+/* Work bullet: প্রতিটির শুরুতে বোল্ড লেবেল ("…:"), বাকিটা নরমাল */
+ul.b{margin:2mm 0 0 13px}
+ul.b li{margin-bottom:var(--bgap)}
+ul.b li:last-child{margin-bottom:0}
+ul.b li b{color:var(--ink);font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:8.5pt}
+th{text-align:left;font-size:7.3pt;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:0 6px 1.3mm 0;border-bottom:1px solid var(--line)}
+td{padding:var(--rowpad) 6px var(--rowpad) 0;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:600;color:var(--ink)}
+td.url{font-family:Consolas,'Courier New',monospace;font-size:7.6pt;color:var(--accent);word-break:break-all}
+/* Projects টেবিলের ভেতরের উপ-শিরোনাম (Company Tools / Client & Personal) */
+tr.grp td{padding:1.8mm 0 1mm;font-size:7.3pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+tr.grp td span{font-weight:500;letter-spacing:0;text-transform:none;color:var(--dim);margin-left:6px}
+tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;color:var(--accent)}
+
+/* References: দুটি কার্ড পাশাপাশি; লেখার মাপ বাম কলামের item-এর সমান */
+.refs{display:grid;grid-template-columns:1fr 1fr;gap:2.4mm}
+.ref{background:#fff;border-left:3px solid var(--accent);border-radius:4px;padding:2mm 2.6mm}
+.ref b{display:block;font-size:8.5pt;color:var(--ink);font-weight:700;line-height:1.3}
+.ref span{display:block;font-size:7.9pt;color:var(--body);line-height:1.4}
+.ref .ttl{color:var(--accent);font-weight:600}
+.ref .org{margin-bottom:.6mm}
+
+@media print{
+  body{background:#fff}
+  .toolbar{display:none}
+  .page{margin:0;box-shadow:none;page-break-after:always}
+  .page:last-child{page-break-after:auto}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- PDF বাটন (শুধু স্ক্রিনে, পৃষ্ঠার উপরে) -->
+<div class="toolbar">
+  <button type="button" onclick="window.print()">⬇ Save as PDF</button>
+  <small>In the print window: Destination → <b>Save as PDF</b> · Paper → <b>A4</b> · Margins → <b>None</b> · ✅ <b>Background graphics</b></small>
+</div>
+
+<!-- আইকন (একবার সংজ্ঞায়িত, পরে ব্যবহার) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2a5 5 0 0 1 5.5 5.8"/></symbol>
+  <symbol id="i-case" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c2 2 10 2 12 0v-4.5"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M9 13.5 8 21l4-2 4 2-1-7.5"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-5L16 4l4 4L9 19z"/><path d="M14 6l4 4"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+</svg>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="page">
+  <aside class="side">
+    <!-- ছবি: cv.html যে ফোল্ডারে, তার ভেতরের images/asifur.jpg -->
+    <div class="photo"><img src="images/asifur.jpg" alt="Md. Asifur Rahman"></div>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-user"/></svg></span>Contact</h2>
+      <ul class="clist">
+        <li><svg><use href="#i-pin"/></svg>North Agrabad, Chattogram, Bangladesh</li>
+        <!-- নম্বরে ক্লিক করলে WhatsApp খোলে -->
+        <li><svg><use href="#i-phone"/></svg><a href="https://wa.me/8801821304262">+880 1821 304262</a></li>
+        <li><svg><use href="#i-mail"/></svg><a href="mailto:asifctg94@gmail.com">asifctg94@gmail.com</a></li>
+        <li><svg><use href="#i-link"/></svg><a href="https://www.linkedin.com/in/md-asifur-rahman-a955a9197/">linkedin.com/in/md-asifur-rahman-a955a9197</a></li>
+        <li><svg><use href="#i-code"/></svg><a href="https://github.com/asifur-rahman-ai">github.com/asifur-rahman-ai</a></li>
+        <li><svg><use href="#i-globe"/></svg><a href="https://asifur-rahman-ai.github.io/portfolio/">asifur-rahman-ai.github.io/portfolio</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-grid"/></svg></span>Core Skills</h2>
+      <div class="sk"><b>AI &amp; Automation</b><span>AI-assisted development (Claude, ChatGPT, Gemini, Copilot), Google Apps Script, workflow automation</span></div>
+      <div class="sk"><b>Web Development</b><span>HTML, CSS, JavaScript, PHP, WordPress, Elementor, ACF, Bootstrap, Chart.js</span></div>
+      <div class="sk"><b>IT Infrastructure</b><span>Microsoft 365, Exchange Online, cPanel, DNS, SSL, PC and network setup, printers, IP phones</span></div>
+      <div class="sk"><b>Web Security</b><span>Malware and spam cleanup, incident response, WordPress hardening, backup</span></div>
+      <div class="sk"><b>Data</b><span>Python (pandas), data cleaning, Google Sheets, MySQL, dashboards</span></div>
+      <div class="sk"><b>Design &amp; SEO</b><span>Photoshop, Illustrator, Canva, branding, print design, SEO, Search Console</span></div>
+    </section>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-chat"/></svg></span>Languages</h2>
+      <!-- bar-এর দৈর্ঘ্য: --v -->
+      <div class="item"><b>Bengali</b><span>Native</span><div class="lbar"><i style="--v:100%"></i></div></div>
+      <div class="item"><b>English</b><span>Professional working proficiency</span><div class="lbar"><i style="--v:75%"></i></div></div>
+    </section>
+  </aside>
+
+  <main class="main">
+    <div class="head">
+      <h1>Md. Asifur Rahman</h1>
+      <div class="role">Digital Solutions Engineer</div>
+      <div class="focus">Web Development · IT Infrastructure · AI-Assisted Automation · Brand Design</div>
+    </div>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-user"/></svg></span>Profile</h2>
+      <p class="profile">Digital Solutions Engineer with nearly 5 years of experience building websites, internal business tools and IT systems for maritime and logistics companies. I use AI-assisted development to turn manual office processes into working web applications, and I verify the output before it goes live. M.Engg in Computer Science &amp; Engineering.</p>
+    </section>
+
+    <!-- Key Results: ৮টি tile; সব তথ্য নিচের work bullet ও Training থেকে নেওয়া -->
+    <section>
+      <h2><span class="ico"><svg><use href="#i-star"/></svg></span>Key Results</h2>
+      <div class="tiles">
+        <div class="tile"><b>6</b><span>tools built with AI-assisted development</span></div>
+        <div class="tile"><b>75,000+</b><span>emails (38 GB) moved to Microsoft 365</span></div>
+        <div class="tile"><b>590+</b><span>vessel datasets standardised</span></div>
+        <div class="tile"><b>12</b><span>public projects on GitHub</span></div>
+        <div class="tile"><b>Daily</b><span>PC, network, IP phone &amp; printers</span></div>
+        <div class="tile"><b>50+</b><span>hidden spam links removed</span></div>
+        <div class="tile"><b>592</b><span>jobs analysed with Python</span></div>
+        <div class="tile"><b>2</b><span>AI courses, Helsinki and IBM</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-case"/></svg></span>Work Experience</h2>
+      <div class="job">
+        <div><div class="t">Digital Executive</div><div class="c">Assurance Maritime Bangladesh Limited · Chattogram</div></div>
+        <div class="d">Jan 2023 – Present</div>
+      </div>
+      <ul class="b">
+        <li><b>Email migration to Microsoft 365:</b> planned and ran the in-house migration of company email from cPanel to Exchange Online. 4 mailboxes and 75,000+ messages (38 GB in the largest mailbox) synced with no failed batch; SPF, DKIM and DMARC configured; MX cutover in final stage.</li>
+        <li><b>AI-assisted Maritime Case Register (in progress):</b> designing a multi-user web application with PIN login, audit log, dispatch and receive sub-registers and chart insights; analysed the 592-job register with Python and pandas to shape it.</li>
+        <li><b>Internal tools:</b> built a Leave Management System (Google Sheets and Apps Script, WhatsApp alerts, manager approval), Power of Attorney Generator (PDF and Word), Team File Share (PHP), Document Register and Requisition Slip on one shared design system.</li>
+        <li><b>Corporate website:</b> redesigned and maintain the WordPress site with Elementor, ACF, custom PHP and CSS/JS; manage domain, hosting, cPanel, DNS and SSL.</li>
+        <li><b>Security incidents:</b> detected and removed an SEO spam injection of 50+ hidden links, audited every page and hardened the site; handled a compromised mailbox credential.</li>
+        <li><b>Data management:</b> cleaned and standardised 590+ vessel datasets; maintain the weekly demolition vessel register.</li>
+        <li><b>Vendors and IT support:</b> compared IT service providers and wrote decision reports for management; provide daily IT support across departments, including PC setup, Windows installation, printers, scanners, routers, network and IP phones.</li>
+        <li><b>Design and documents:</b> produced brochures, certificates, a client guide on ship arrest and an employee policy handbook in the company brand.</li>
+      </ul>
+    </section>
+  </main>
+</div>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page">
+  <aside class="side">
+    <section>
+      <h2><span class="ico"><svg><use href="#i-globe"/></svg></span>See My Work</h2>
+      <div class="qr">
+        <!-- QR-এর ঠিকানা: data= এর পরের অংশ (এখন portfolio site) -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=https%3A%2F%2Fasifur-rahman-ai.github.io%2Fportfolio%2F" alt="QR code to my portfolio">
+        <b>Scan to open my portfolio</b>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-chart"/></svg></span>Skill Levels</h2>
+      <!-- ring কতটা ভরা: style="--v:80" (0–100); নিচের শব্দও মিলিয়ে বদলান -->
+      <div class="rings">
+        <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-cpu"/></svg></div><b>AI</b><span>Advanced</span></div>
+        <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-code"/></svg></div><b>Web Dev</b><span>Advanced</span></div>
+        <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-server"/></svg></div><b>IT Infra</b><span>Advanced</span></div>
+        <div class="rg"><div class="ring" style="--v:60"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-shield"/></svg></div><b>Security</b><span>Intermediate</span></div>
+        <div class="rg"><div class="ring" style="--v:60"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-chart"/></svg></div><b>Data</b><span>Intermediate</span></div>
+        <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-pen"/></svg></div><b>Design</b><span>Advanced</span></div>
+      </div>
+      <div class="rnote">Self-assessed level</div>
+    </section>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-cap"/></svg></span>Education</h2>
+      <div class="item"><b>M.Engg, CSE</b><span>Port City International University · 2021</span></div>
+      <div class="item"><b>B.Engg, CSE</b><span>Premier University, Chattogram · 2018</span></div>
+      <div class="item"><b>HSC, Science</b><span>BEPZA Public School &amp; College · 2012</span></div>
+      <div class="item"><b>SSC, Science</b><span>Chattogram Port Authority High School &amp; College · 2010</span></div>
+    </section>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-award"/></svg></span>Training</h2>
+      <div class="item"><b>Elements of AI</b><span>University of Helsinki &amp; MinnaLearn · 2025 · 2 ECTS</span></div>
+      <div class="item"><b>Exploring Artificial Intelligence</b><span>IBM SkillsBuild · 2025</span></div>
+      <div class="item"><b>CCNA course</b><span>BITM, People Tech, Dhaka · 2021 · 4 months</span></div>
+      <div class="item"><b>Top-Up IT Training (Java)</b><span>ICT Division, Bangladesh Computer Council · 2017 · 6 months</span></div>
+    </section>
+
+    <section>
+      <h2><span class="ico"><svg><use href="#i-heart"/></svg></span>Interests</h2>
+      <div class="item"><span>New technology, visual arts and science; exercise, cricket and football.</span></div>
+    </section>
+  </aside>
+
+  <main class="main">
+    <section>
+      <h2><span class="ico"><svg><use href="#i-case"/></svg></span>Work Experience (continued)</h2>
+      <div class="job">
+        <div><div class="t">Jr. Website Developer &amp; Designer</div><div class="c">Escape Bangladesh Limited · Chattogram</div></div>
+        <div class="d">Dec 2021 – Dec 2022</div>
+      </div>
+      <ul class="b">
+        <li><b>Web development:</b> delivered 3 websites and 1 custom web application from scratch.</li>
+        <li><b>Design and branding:</b> designed 27 flyers, animation videos, company profiles and full branding kits for logistics and construction services.</li>
+        <li><b>Marketing and reporting:</b> managed content marketing and SEO, and produced data-driven reports.</li>
+        <li><b>IT support:</b> resolved network, hardware and software issues; wrote user guides and handover presentations.</li>
+      </ul>
+    </section>
+
+    <!-- Design Work: Gallery-র লিংক শিরোনামের পাশে, নিচে শুধু বিবরণ -->
+    <section>
+      <h2><span class="ico"><svg><use href="#i-pen"/></svg></span>Design Work <span class="h2note">Gallery: <a href="https://asifur-rahman-ai.github.io/portfolio/#design">asifur-rahman-ai.github.io/portfolio/#design</a></span></h2>
+      <p class="just">Flyers, social media posts, brand kits, packaging labels and company profiles for clients in logistics, construction, interior design and consumer goods, made with Adobe Illustrator, Photoshop and Canva.</p>
+    </section>
+
+    <!-- Projects: একটি টেবিল, ভেতরে দুই ভাগ -->
+    <section>
+      <h2><span class="ico"><svg><use href="#i-code"/></svg></span>Projects</h2>
+      <table>
+        <tr><th style="width:31%">Project</th><th>What it does</th><th style="width:30%">Address</th></tr>
+        <tr class="grp"><td colspan="3">Company Tools<span>Demos: <b>asifur-rahman-ai.github.io</b> + address</span></td></tr>
+        <tr><td>Maritime Case Register</td><td>AI-assisted case register with audit log (in progress)</td><td class="url"><a href="https://asifur-rahman-ai.github.io/AI-assisted-maritime-case-register/">/AI-assisted-maritime-case-register</a></td></tr>
+        <tr><td>Leave Management System</td><td>Leave requests, manager approval, WhatsApp alerts</td><td class="url"><a href="https://asifur-rahman-ai.github.io/leave-system-demo/">/leave-system-demo</a></td></tr>
+        <tr><td>Power of Attorney Generator</td><td>Legal POA documents as PDF and Word</td><td class="url"><a href="https://asifur-rahman-ai.github.io/poa-generator-demo/">/poa-generator-demo</a></td></tr>
+        <tr><td>Team File Share</td><td>Internal file sharing</td><td class="url"><a href="https://asifur-rahman-ai.github.io/team-file-share/">/team-file-share</a></td></tr>
+        <tr><td>Document Register</td><td>Incoming/outgoing document log</td><td class="url"><a href="https://asifur-rahman-ai.github.io/document-register-demo/">/document-register-demo</a></td></tr>
+        <tr><td>Requisition Slip</td><td>Requisition form with PDF print</td><td class="url"><a href="https://asifur-rahman-ai.github.io/requisition-slip-demo/">/requisition-slip-demo</a></td></tr>
+        <tr class="grp"><td colspan="3">Client &amp; Personal</td></tr>
+        <tr><td>AMBRRAK</td><td>Turkish coffee shop website</td><td class="url"><a href="https://ambrrak.vercel.app/">ambrrak.vercel.app</a></td></tr>
+        <tr><td>Nirapad Courier</td><td>Courier service website</td><td class="url"><a href="https://asifur-rahman-ai.github.io/nirapad-courier/">/nirapad-courier</a></td></tr>
+        <tr><td>Al Hasan Engineering Works</td><td>Business website for an engineering workshop</td><td class="url"><a href="https://asifur-rahman-ai.github.io/alhasan">/alhasan</a></td></tr>
+        <tr><td>Jasmine Enterprise</td><td>Business website demo</td><td class="url"><a href="https://asifur-rahman-ai.github.io/jasmine-enterprise-demo/">/jasmine-enterprise-demo</a></td></tr>
+        <tr><td>Smart Grocery Basket</td><td>Household inventory tracker</td><td class="url"><a href="https://asifur-rahman-ai.github.io/smart-grocery-basket/">/smart-grocery-basket</a></td></tr>
+      </table>
+    </section>
+
+    <!-- References: অনলাইনে/portfolio-তে দিলে দুজনের ফোন-ইমেইল সবার কাছে খোলা থাকবে; তাঁদের সম্মতি নিন -->
+    <section>
+      <h2><span class="ico"><svg><use href="#i-users"/></svg></span>References</h2>
+      <div class="refs">
+        <div class="ref">
+          <b>Mr. Muhammad Jabedul Islam</b>
+          <span class="ttl">General Manager</span>
+          <span class="org">Escape Bangladesh Limited</span>
+          <span>+880 1819 626399</span>
+          <span><a href="mailto:jabed@escapebd.com">jabed@escapebd.com</a></span>
+        </div>
+        <div class="ref">
+          <b>Mr. M. Aminul Islam Nazir</b>
+          <span class="ttl">Managing Director</span>
+          <span class="org">Assurance Maritime Bangladesh Limited</span>
+          <span>+880 1978 120289</span>
+          <span><a href="mailto:amin@assurance-bd.com">amin@assurance-bd.com</a></span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+</body>
+</html>
