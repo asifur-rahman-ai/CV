@@ -15,8 +15,9 @@
       --pad:7mm;          /* পৃষ্ঠার উপর-নিচের মার্জিন */
       --cardpad:2.7mm;    /* কার্ডের ভেতরের ফাঁকা জায়গা */
       --gap:4.5mm;        /* সব সেকশনের মাঝে সমান ফাঁক (দুই পৃষ্ঠা, দুই কলাম) */
-      --bgap:1.4mm;       /* work bullet-গুলোর মাঝে ফাঁক (দুই পৃষ্ঠায় একই) */
-      --rowpad:1.5mm;}    /* Projects টেবিলের সারির ভেতরের উপর-নিচ ফাঁক */
+      --bgap:1.4mm;       /* work bullet-গুলোর মাঝে ফাঁক (দুই পৃষ্ঠায় একই) — স্ক্রিপ্ট মিলিয়ে নেয় */
+      --rowpad:1.5mm;     /* Projects টেবিলের সারির ভেতরের উপর-নিচ ফাঁক — স্ক্রিপ্ট মিলিয়ে নেয় */
+      --sgap:1.4mm;}      /* বাম কলামের item-গুলোর মাঝে ফাঁক — স্ক্রিপ্ট প্রতি পৃষ্ঠায় মিলিয়ে নেয় */
 body{background:#e6e9e2;font-family:'Inter',system-ui,Arial,sans-serif;color:var(--body);font-size:9.2pt;line-height:1.45}
 a{color:inherit;text-decoration:none}
 svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -26,6 +27,7 @@ svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-lin
 .toolbar button{font-family:'Inter',sans-serif;font-size:10.5pt;font-weight:700;color:#fff;background:var(--accent);border:0;border-radius:99px;padding:10px 22px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .toolbar button:hover{background:#2c7a04}
 .toolbar small{font-size:8.5pt;line-height:1.45;color:var(--body)}
+.toolbar .fit{flex-basis:100%;text-align:center;font-weight:600;color:var(--accent)}
 
 /* পৃষ্ঠা: সারির উচ্চতা A4-এ বাঁধা, তাই এক কলাম লম্বা হলে অন্য কলাম টেনে লম্বা হয় না */
 .page{width:210mm;height:297mm;margin:8mm auto;background:#fff;display:grid;grid-template-columns:64mm 1fr;grid-template-rows:minmax(0,1fr);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.12)}
@@ -56,22 +58,22 @@ h1{font-size:25pt;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-he
 .focus{font-size:8.7pt;color:var(--dim);margin-top:2px}
 .head{padding:0 var(--cardpad) 3mm;border-bottom:2px solid var(--accent)}
 
-/* ছবি: পাসপোর্ট-ধাঁচের ছবি নিজেই ঠিক মাপে, তাই বড় করা হয় না; উপর থেকে বসানো
+/* ছবি: 42×50mm (আগের 46×55-এর একই অনুপাত, জায়গা বাঁচাতে ছোট); উপর থেকে বসানো
    মুখ আরও বড় চাইলে: transform:scale(1.1);transform-origin:50% 25%; যোগ করুন */
-.photo{width:46mm;height:55mm;border-radius:8px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15);overflow:hidden;margin:0 auto;flex-shrink:0;background:#fff}
+.photo{width:42mm;height:50mm;border-radius:8px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15);overflow:hidden;margin:0 auto;flex-shrink:0;background:#fff}
 .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block}
 
-/* Sidebar content */
+/* Sidebar content — ছোট লেখা সব 8pt, লেবেল 8.5pt */
 .clist{list-style:none}
-.clist li{display:flex;gap:6px;align-items:flex-start;margin-bottom:1.5mm;font-size:8.2pt;color:var(--ink);word-break:break-word}
+.clist li{display:flex;gap:6px;align-items:flex-start;margin-bottom:var(--sgap);font-size:8pt;color:var(--ink);word-break:break-word}
 .clist li:last-child{margin-bottom:0}
 .clist svg{width:3.5mm;height:3.5mm;color:var(--accent);flex-shrink:0;margin-top:1px}
-.sk,.item{margin-bottom:1.4mm}
+.sk,.item{margin-bottom:var(--sgap)}
 .sk:last-child,.item:last-child{margin-bottom:0}
 .sk b{display:block;font-size:8.5pt;color:var(--ink);font-weight:700}
 .sk span{display:block;font-size:8pt;color:var(--body)}
 .item b{display:block;font-size:8.5pt;color:var(--ink);font-weight:600;line-height:1.3}
-.item span{font-size:7.9pt;color:var(--dim)}
+.item span{font-size:8pt;color:var(--dim)}
 .qr{text-align:center}
 .qr img{width:22mm;height:22mm;display:block;margin:0 auto 2mm}
 .qr b{display:block;font-size:8.5pt;color:var(--ink)}
@@ -90,12 +92,12 @@ h1{font-size:25pt;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-he
 .ring .arc .fg{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:calc(var(--v) - 4) 100}
 .ring .ic{position:relative;width:4.2mm;height:4.2mm;color:var(--accent)}
 .rg b{display:block;font-size:7.3pt;color:var(--ink);font-weight:700;line-height:1.2}
-.rg span{display:block;font-size:6.7pt;color:var(--dim);line-height:1.2}
+.rg span{display:block;font-size:6.8pt;color:var(--dim);line-height:1.2}
 .rnote{font-size:6.8pt;color:var(--dim);text-align:center;margin-top:1.2mm}
 
 /* Main content */
 .profile{font-size:9.4pt;color:var(--ink)}
-/* Key Results: ৪ কলাম, ২ সারি (৮টি tile) */
+/* Key Results: ৪ কলাম, ২ সারি (৮টি tile); সব tile-এ একই ফন্ট */
 .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:2mm}
 .tile{background:#fff;border-left:3px solid var(--accent);border-radius:4px;padding:2mm 2.4mm}
 .tile b{display:block;font-size:13.5pt;font-weight:800;color:var(--accent);line-height:1.1}
@@ -103,7 +105,9 @@ h1{font-size:25pt;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-he
 .job{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .job .t{font-size:10.4pt;font-weight:700;color:var(--ink);line-height:1.25}
 .job .c{font-size:9.1pt;font-weight:600;color:var(--accent)}
-.job .d{font-size:7.9pt;font-weight:600;color:var(--accent);background:var(--tint2);padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:1px}
+/* পদোন্নতির লাইন: ছোট লেখা (8pt), বাকি ছোট লেখার সমান */
+.job .p{font-size:8pt;color:var(--dim);margin-top:1px}
+.job .d{font-size:8pt;font-weight:600;color:var(--accent);background:var(--tint2);padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:1px}
 /* Work bullet: প্রতিটির শুরুতে বোল্ড লেবেল ("…:"), বাকিটা নরমাল */
 ul.b{margin:2mm 0 0 13px}
 ul.b li{margin-bottom:var(--bgap)}
@@ -120,11 +124,11 @@ tr.grp td{padding:1.8mm 0 1mm;font-size:7.3pt;font-weight:700;letter-spacing:.08
 tr.grp td span{font-weight:500;letter-spacing:0;text-transform:none;color:var(--dim);margin-left:6px}
 tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;color:var(--accent)}
 
-/* References: দুটি কার্ড পাশাপাশি; লেখার মাপ বাম কলামের item-এর সমান */
+/* References: দুটি কার্ড পাশাপাশি; লেখার মাপ বাম কলামের item-এর সমান (8.5pt / 8pt) */
 .refs{display:grid;grid-template-columns:1fr 1fr;gap:2.4mm}
 .ref{background:#fff;border-left:3px solid var(--accent);border-radius:4px;padding:2mm 2.6mm}
 .ref b{display:block;font-size:8.5pt;color:var(--ink);font-weight:700;line-height:1.3}
-.ref span{display:block;font-size:7.9pt;color:var(--body);line-height:1.4}
+.ref span{display:block;font-size:8pt;color:var(--body);line-height:1.4}
 .ref .ttl{color:var(--accent);font-weight:600}
 .ref .org{margin-bottom:.6mm}
 
@@ -143,6 +147,8 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
 <div class="toolbar">
   <button type="button" onclick="window.print()">⬇ Save as PDF</button>
   <small>In the print window: Destination → <b>Save as PDF</b> · Paper → <b>A4</b> · Margins → <b>None</b> · ✅ <b>Background graphics</b></small>
+  <!-- দুই কলাম এক লাইনে শেষ হলো কিনা, স্ক্রিপ্ট এখানে জানায় -->
+  <small class="fit" id="fit"></small>
 </div>
 
 <!-- আইকন (একবার সংজ্ঞায়িত, পরে ব্যবহার) -->
@@ -190,12 +196,12 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
 
     <section>
       <h2><span class="ico"><svg><use href="#i-grid"/></svg></span>Core Skills</h2>
-      <div class="sk"><b>AI &amp; Automation</b><span>AI-assisted development (Claude, ChatGPT, Gemini, Copilot), Google Apps Script, workflow automation</span></div>
+      <div class="sk"><b>Agentic AI &amp; Automation</b><span>AI agents, AI-assisted development (Claude, ChatGPT, Gemini, Copilot), Google Apps Script, workflow automation</span></div>
       <div class="sk"><b>Web Development</b><span>HTML, CSS, JavaScript, PHP, WordPress, Elementor, ACF, Bootstrap, Chart.js</span></div>
       <div class="sk"><b>IT Infrastructure</b><span>Microsoft 365, Exchange Online, cPanel, DNS, SSL, PC and network setup, printers, IP phones</span></div>
-      <div class="sk"><b>Web Security</b><span>Malware and spam cleanup, incident response, WordPress hardening, backup</span></div>
+      <div class="sk"><b>Web Security</b><span>Malware and spam cleanup, incident response, site hardening, backup</span></div>
       <div class="sk"><b>Data</b><span>Python (pandas), data cleaning, Google Sheets, MySQL, dashboards</span></div>
-      <div class="sk"><b>Design &amp; SEO</b><span>Photoshop, Illustrator, Canva, branding, print design, SEO, Search Console</span></div>
+      <div class="sk"><b>Design &amp; SEO</b><span>Photoshop, Illustrator, Canva, branding, print design, SEO</span></div>
     </section>
 
     <section>
@@ -210,43 +216,44 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
     <div class="head">
       <h1>Md. Asifur Rahman</h1>
       <div class="role">Digital Solutions Engineer</div>
-      <div class="focus">Web Development · IT Infrastructure · AI-Assisted Automation · Brand Design</div>
+      <div class="focus">Agentic AI · Web Development · IT Infrastructure · Brand Design</div>
     </div>
 
     <section>
       <h2><span class="ico"><svg><use href="#i-user"/></svg></span>Profile</h2>
-      <p class="profile">Digital Solutions Engineer with nearly 5 years of experience building websites, internal business tools and IT systems for maritime and logistics companies. I use AI-assisted development to turn manual office processes into working web applications, and I verify the output before it goes live. M.Engg in Computer Science &amp; Engineering.</p>
+      <p class="profile">Digital Solutions Engineer with nearly 5 years of experience, now leading the digital transformation of a maritime company as sole owner of its IT and digital functions, reporting to the Managing Director. I work with agentic AI to turn manual office processes into working web applications and internal tools, and I verify every output before it goes live. M.Engg in Computer Science &amp; Engineering.</p>
     </section>
 
-    <!-- Key Results: ৮টি tile; সব তথ্য নিচের work bullet ও Training থেকে নেওয়া -->
+    <!-- Key Results: ৮টি tile; সব tile-এ একই ফন্ট (সংখ্যা/শব্দ 13.5pt, বিবরণ 7.5pt) -->
     <section>
       <h2><span class="ico"><svg><use href="#i-star"/></svg></span>Key Results</h2>
       <div class="tiles">
+        <div class="tile"><b>Agentic</b><span>AI workflows to build, test and ship tools</span></div>
         <div class="tile"><b>6</b><span>tools built with AI-assisted development</span></div>
         <div class="tile"><b>75,000+</b><span>emails (38 GB) moved to Microsoft 365</span></div>
         <div class="tile"><b>590+</b><span>vessel datasets standardised</span></div>
-        <div class="tile"><b>12</b><span>public projects on GitHub</span></div>
-        <div class="tile"><b>Daily</b><span>PC, network, IP phone &amp; printers</span></div>
+        <div class="tile"><b>Org-wide</b><span>end-user IT support: hardware, network &amp; VoIP</span></div>
         <div class="tile"><b>50+</b><span>hidden spam links removed</span></div>
-        <div class="tile"><b>592</b><span>jobs analysed with Python</span></div>
+        <div class="tile"><b>12</b><span>public projects on GitHub</span></div>
         <div class="tile"><b>2</b><span>AI courses, Helsinki and IBM</span></div>
       </div>
     </section>
 
     <section>
       <h2><span class="ico"><svg><use href="#i-case"/></svg></span>Work Experience</h2>
+      <!-- pill = কোম্পানিতে মোট সময়; নিচের ছোট লাইনে পদোন্নতি -->
       <div class="job">
-        <div><div class="t">Digital Executive</div><div class="c">Assurance Maritime Bangladesh Limited · Chattogram</div></div>
+        <div><div class="t">Assistant Manager, IT &amp; Digital</div><div class="c">Assurance Maritime Bangladesh Limited · Chattogram</div><div class="p">Promoted Nov 2026 · Digital Executive, Jan 2023 – Oct 2026</div></div>
         <div class="d">Jan 2023 – Present</div>
       </div>
       <ul class="b">
-        <li><b>Email migration to Microsoft 365:</b> planned and ran the in-house migration of company email from cPanel to Exchange Online. 4 mailboxes and 75,000+ messages (38 GB in the largest mailbox) synced with no failed batch; SPF, DKIM and DMARC configured; MX cutover in final stage.</li>
-        <li><b>AI-assisted Maritime Case Register (in progress):</b> designing a multi-user web application with PIN login, audit log, dispatch and receive sub-registers and chart insights; analysed the 592-job register with Python and pandas to shape it.</li>
-        <li><b>Internal tools:</b> built a Leave Management System (Google Sheets and Apps Script, WhatsApp alerts, manager approval), Power of Attorney Generator (PDF and Word), Team File Share (PHP), Document Register and Requisition Slip on one shared design system.</li>
-        <li><b>Corporate website:</b> redesigned and maintain the WordPress site with Elementor, ACF, custom PHP and CSS/JS; manage domain, hosting, cPanel, DNS and SSL.</li>
-        <li><b>Security incidents:</b> detected and removed an SEO spam injection of 50+ hidden links, audited every page and hardened the site; handled a compromised mailbox credential.</li>
+        <li><b>Email migration to Microsoft 365:</b> planned and ran the in-house move from cPanel to Exchange Online; 4 mailboxes and 75,000+ messages (38 GB largest mailbox) synced with no failed batch; SPF, DKIM and DMARC configured; MX cutover in final stage.</li>
+        <li><b>AI-assisted Maritime Case Register (in progress):</b> multi-user web application with PIN login, audit log, dispatch and receive sub-registers and charts, shaped by a Python (pandas) analysis of the 592-job register.</li>
+        <li><b>Internal tools:</b> Leave Management System (Apps Script, WhatsApp alerts, manager approval), Power of Attorney Generator (PDF and Word), Team File Share (PHP), Document Register and Requisition Slip on one shared design system.</li>
+        <li><b>Corporate website:</b> redesigned and maintain the WordPress site with Elementor, ACF and custom PHP; manage domain, hosting, cPanel, DNS and SSL.</li>
+        <li><b>Security incidents:</b> removed an SEO spam injection of 50+ hidden links, audited every page and hardened the site; handled a compromised mailbox credential.</li>
         <li><b>Data management:</b> cleaned and standardised 590+ vessel datasets; maintain the weekly demolition vessel register.</li>
-        <li><b>Vendors and IT support:</b> compared IT service providers and wrote decision reports for management; provide daily IT support across departments, including PC setup, Windows installation, printers, scanners, routers, network and IP phones.</li>
+        <li><b>Vendors and IT support:</b> compared IT providers and wrote decision reports for management; daily IT support across departments, including PC setup, Windows installation, printers, scanners, routers, network and IP phones.</li>
         <li><b>Design and documents:</b> produced brochures, certificates, a client guide on ship arrest and an employee policy handbook in the company brand.</li>
       </ul>
     </section>
@@ -269,7 +276,7 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
       <h2><span class="ico"><svg><use href="#i-chart"/></svg></span>Skill Levels</h2>
       <!-- ring কতটা ভরা: style="--v:80" (0–100); নিচের শব্দও মিলিয়ে বদলান -->
       <div class="rings">
-        <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-cpu"/></svg></div><b>AI</b><span>Advanced</span></div>
+        <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-cpu"/></svg></div><b>Agentic AI</b><span>Advanced</span></div>
         <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-code"/></svg></div><b>Web Dev</b><span>Advanced</span></div>
         <div class="rg"><div class="ring" style="--v:80"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-server"/></svg></div><b>IT Infra</b><span>Advanced</span></div>
         <div class="rg"><div class="ring" style="--v:60"><svg class="arc" viewBox="0 0 36 36"><circle class="tr" cx="18" cy="18" r="16"/><circle class="fg" cx="18" cy="18" r="16" pathLength="100"/></svg><svg class="ic"><use href="#i-shield"/></svg></div><b>Security</b><span>Intermediate</span></div>
@@ -335,7 +342,6 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
         <tr><td>Document Register</td><td>Incoming/outgoing document log</td><td class="url"><a href="https://asifur-rahman-ai.github.io/document-register-demo/">/document-register-demo</a></td></tr>
         <tr><td>Requisition Slip</td><td>Requisition form with PDF print</td><td class="url"><a href="https://asifur-rahman-ai.github.io/requisition-slip-demo/">/requisition-slip-demo</a></td></tr>
         <tr class="grp"><td colspan="3">Client &amp; Personal</td></tr>
-        <tr><td>AMBRRAK</td><td>Turkish coffee shop website</td><td class="url"><a href="https://ambrrak.vercel.app/">ambrrak.vercel.app</a></td></tr>
         <tr><td>Nirapad Courier</td><td>Courier service website</td><td class="url"><a href="https://asifur-rahman-ai.github.io/nirapad-courier/">/nirapad-courier</a></td></tr>
         <tr><td>Al Hasan Engineering Works</td><td>Business website for an engineering workshop</td><td class="url"><a href="https://asifur-rahman-ai.github.io/alhasan">/alhasan</a></td></tr>
         <tr><td>Jasmine Enterprise</td><td>Business website demo</td><td class="url"><a href="https://asifur-rahman-ai.github.io/jasmine-enterprise-demo/">/jasmine-enterprise-demo</a></td></tr>
@@ -365,6 +371,50 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
     </section>
   </main>
 </div>
+
+<script>
+/* দুই কলাম এক লাইনে শেষ করা।
+   লেখার মাপ কখনো বদলায় না, সেকশনের মাঝের --gap-ও না; শুধু ভেতরের ফাঁক:
+   বাম কলাম → --sgap (প্রতি পৃষ্ঠায় আলাদা)
+   পৃষ্ঠা ১ ডান → --bgap (bullet ফাঁক; দুই পৃষ্ঠায় একই থাকে)
+   পৃষ্ঠা ২ ডান → --rowpad (Projects টেবিল) */
+(function(){
+  const MM=96/25.4, root=document.documentElement, LIMIT=297-7;
+  const base={sgap:1.4,bgap:1.4,rowpad:1.5};
+  const lim={sgap:[0.6,6],bgap:[0.8,4],rowpad:[0.6,4]};
+  const setV=(el,n,v)=>el.style.setProperty('--'+n,v.toFixed(3)+'mm');
+  const bottom=col=>(col.lastElementChild.getBoundingClientRect().bottom-col.closest('.page').getBoundingClientRect().top)/MM;
+  /* var-এর সবচেয়ে বড় মান খোঁজে, যাতে কলামের নিচ target ছাড়িয়ে না যায় */
+  function fit(col,el,n,target){
+    let lo=lim[n][0],hi=lim[n][1];
+    setV(el,n,lo); if(bottom(col)>target+0.05)return 'over';
+    setV(el,n,hi); if(bottom(col)<=target)return 'short';
+    for(let i=0;i<24;i++){const m=(lo+hi)/2;setV(el,n,m);if(bottom(col)<=target)lo=m;else hi=m}
+    setV(el,n,lo);return 'ok';
+  }
+  function run(){
+    const out=[];
+    setV(root,'bgap',base.bgap);
+    document.querySelectorAll('.page').forEach((pg,i)=>{
+      const side=pg.querySelector('.side'),main=pg.querySelector('.main');
+      const mv=i===0?'bgap':'rowpad',mel=i===0?root:main;
+      setV(side,'sgap',base.sgap); if(i>0)setV(main,'rowpad',base.rowpad);
+      let warn='';
+      if(bottom(side)>LIMIT&&fit(side,side,'sgap',LIMIT)==='over')warn=' ⚠ left column too long';
+      if(bottom(main)>LIMIT&&fit(main,mel,mv,LIMIT)==='over')warn=' ⚠ right column too long';
+      const s=bottom(side),m=bottom(main);
+      let r='ok';
+      if(Math.abs(s-m)>0.2) r=s<m?fit(side,side,'sgap',m):fit(main,mel,mv,s);
+      const d=Math.abs(bottom(side)-bottom(main));
+      out.push('Page '+(i+1)+(warn||(d<=0.3?' ✓ aligned':' ⚠ off by '+d.toFixed(1)+' mm'+(r==='short'?' (needs more content)':''))));
+    });
+    const f=document.getElementById('fit'); if(f)f.textContent='Layout check: '+out.join(' · ');
+  }
+  (document.fonts?document.fonts.ready:Promise.resolve()).then(run);
+  window.addEventListener('load',run);
+  window.addEventListener('beforeprint',run);
+})();
+</script>
 
 </body>
 </html>
