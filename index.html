@@ -68,12 +68,18 @@ h1{font-size:25pt;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-he
 .clist li{display:flex;gap:6px;align-items:flex-start;margin-bottom:var(--sgap);font-size:8pt;color:var(--ink);word-break:break-word}
 .clist li:last-child{margin-bottom:0}
 .clist svg{width:3.5mm;height:3.5mm;color:var(--accent);flex-shrink:0;margin-top:1px}
+/* Portfolio লিংক: হালকা হাইলাইট — লেখার মাপ একই (8pt), শুধু পটভূমি, বাঁ দাগ, রং ও ওজন।
+   ঋণাত্মক মার্জিন দেওয়ায় আইকন ও লেখা অন্য লাইনগুলোর সাথে এক সোজায় থাকে */
+.clist li.pf{background:var(--tint2);border-left:2.5px solid var(--accent);border-radius:2mm;padding:1.1mm 1.6mm 1.1mm calc(1.6mm - 2.5px);margin-left:-1.6mm;margin-right:-1.6mm;color:var(--accent);font-weight:700}
 .sk,.item{margin-bottom:var(--sgap)}
 .sk:last-child,.item:last-child{margin-bottom:0}
 .sk b{display:block;font-size:8.5pt;color:var(--ink);font-weight:700}
 .sk span{display:block;font-size:8pt;color:var(--body)}
 .item b{display:block;font-size:8.5pt;color:var(--ink);font-weight:600;line-height:1.3}
 .item span{font-size:8pt;color:var(--dim)}
+/* Education: ডিগ্রির নামের লাইনের ডানদিকে রেজাল্ট (নতুন লাইন লাগে না; 8pt, বাকি ছোট লেখার সমান) */
+.item.edu b{display:flex;justify-content:space-between;align-items:baseline;gap:4px}
+.item.edu b em{font-style:normal;font-size:8pt;font-weight:600;color:var(--accent);white-space:nowrap}
 .qr{text-align:center}
 .qr img{width:22mm;height:22mm;display:block;margin:0 auto 2mm}
 .qr b{display:block;font-size:8.5pt;color:var(--ink)}
@@ -190,7 +196,8 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
         <li><svg><use href="#i-mail"/></svg><a href="mailto:asifctg94@gmail.com">asifctg94@gmail.com</a></li>
         <li><svg><use href="#i-link"/></svg><a href="https://www.linkedin.com/in/md-asifur-rahman-a955a9197/">linkedin.com/in/md-asifur-rahman-a955a9197</a></li>
         <li><svg><use href="#i-code"/></svg><a href="https://github.com/asifur-rahman-ai">github.com/asifur-rahman-ai</a></li>
-        <li><svg><use href="#i-globe"/></svg><a href="https://asifur-rahman-ai.github.io/portfolio/">asifur-rahman-ai.github.io/portfolio</a></li>
+        <!-- Portfolio: হালকা হাইলাইট (class "pf") -->
+        <li class="pf"><svg><use href="#i-globe"/></svg><a href="https://asifur-rahman-ai.github.io/portfolio/">asifur-rahman-ai.github.io/portfolio</a></li>
       </ul>
     </section>
 
@@ -243,7 +250,7 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
       <h2><span class="ico"><svg><use href="#i-case"/></svg></span>Work Experience</h2>
       <!-- pill = কোম্পানিতে মোট সময়; নিচের ছোট লাইনে পদোন্নতি -->
       <div class="job">
-        <div><div class="t">Assistant Manager, IT &amp; Digital</div><div class="c">Assurance Maritime Bangladesh Limited · Chattogram</div><div class="p">Promoted Nov 2026 · Digital Executive, Jan 2023 – Oct 2026</div></div>
+        <div><div class="t">IT Systems &amp; Automation Specialist</div><div class="c">Assurance Maritime Bangladesh Limited · Chattogram</div><div class="p">Promoted Nov 2026 · Digital Executive, Jan 2023 – Oct 2026</div></div>
         <div class="d">Jan 2023 – Present</div>
       </div>
       <ul class="b">
@@ -286,12 +293,13 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
       <div class="rnote">Self-assessed level</div>
     </section>
 
+    <!-- Education: ডিগ্রির নামের ডানদিকে রেজাল্ট (<em>…</em>) -->
     <section>
       <h2><span class="ico"><svg><use href="#i-cap"/></svg></span>Education</h2>
-      <div class="item"><b>M.Engg, CSE</b><span>Port City International University · 2021</span></div>
-      <div class="item"><b>B.Engg, CSE</b><span>Premier University, Chattogram · 2018</span></div>
-      <div class="item"><b>HSC, Science</b><span>BEPZA Public School &amp; College · 2012</span></div>
-      <div class="item"><b>SSC, Science</b><span>Chattogram Port Authority High School &amp; College · 2010</span></div>
+      <div class="item edu"><b>M.Engg, CSE <em>CGPA 3.35/4.00</em></b><span>Port City International University · 2021</span></div>
+      <div class="item edu"><b>B.Engg, CSE <em>CGPA 2.84/4.00</em></b><span>Premier University, Chattogram · 2018</span></div>
+      <div class="item edu"><b>HSC, Science <em>GPA 3.70/5.00</em></b><span>BEPZA Public School &amp; College · 2012</span></div>
+      <div class="item edu"><b>SSC, Science <em>GPA 4.69/5.00</em></b><span>Chattogram Port Authority High School &amp; College · 2010</span></div>
     </section>
 
     <section>
