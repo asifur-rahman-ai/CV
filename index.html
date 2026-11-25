@@ -119,13 +119,15 @@ ul.b{margin:2mm 0 0 13px}
 ul.b li{margin-bottom:var(--bgap)}
 ul.b li:last-child{margin-bottom:0}
 ul.b li b{color:var(--ink);font-weight:600}
+/* bullet-এর ভেতরের লিংক (যেমন assurance-bd.com): accent রং, মাপ একই */
+ul.b li a{color:var(--accent);font-weight:600}
 table{width:100%;border-collapse:collapse;font-size:8.5pt}
 th{text-align:left;font-size:7.3pt;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:0 6px 1.3mm 0;border-bottom:1px solid var(--line)}
 td{padding:var(--rowpad) 6px var(--rowpad) 0;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:none}
 td:first-child{font-weight:600;color:var(--ink)}
 td.url{font-family:Consolas,'Courier New',monospace;font-size:7.6pt;color:var(--accent);word-break:break-all}
-/* Projects টেবিলের ভেতরের উপ-শিরোনাম (Company Tools / Client & Personal) */
+/* Projects টেবিলের ভেতরের উপ-শিরোনাম (Company Work / Client & Personal) */
 tr.grp td{padding:1.8mm 0 1mm;font-size:7.3pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 tr.grp td span{font-weight:500;letter-spacing:0;text-transform:none;color:var(--dim);margin-left:6px}
 tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;color:var(--accent)}
@@ -257,7 +259,8 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
         <li><b>Email migration to Microsoft 365:</b> planned and ran the in-house move from cPanel to Exchange Online; 4 mailboxes and 75,000+ messages (38 GB largest mailbox) synced with no failed batch; SPF, DKIM and DMARC configured; MX cutover in final stage.</li>
         <li><b>AI-assisted Maritime Case Register (in progress):</b> multi-user web application with PIN login, audit log, dispatch and receive sub-registers and charts, shaped by a Python (pandas) analysis of the 592-job register.</li>
         <li><b>Internal tools:</b> Leave Management System (Apps Script, WhatsApp alerts, manager approval), Power of Attorney Generator (PDF and Word), Team File Share (PHP), Document Register and Requisition Slip on one shared design system.</li>
-        <li><b>Corporate website:</b> redesigned and maintain the WordPress site with Elementor, ACF and custom PHP; manage domain, hosting, cPanel, DNS and SSL.</li>
+        <!-- Corporate website: লিংকসহ; শুধু যে কাজগুলো নিজে করা হয়েছে -->
+        <li><b>Corporate website (<a href="https://assurance-bd.com/">assurance-bd.com</a>):</b> refreshed the live WordPress site with Elementor, ACF and custom PHP: updated layouts and fonts, stats counters, a client logo wall, a People section, SEO meta titles and descriptions, and better mobile layouts; manage domain, hosting, cPanel, DNS and SSL.</li>
         <li><b>Security incidents:</b> removed an SEO spam injection of 50+ hidden links, audited every page and hardened the site; handled a compromised mailbox credential.</li>
         <li><b>Data management:</b> cleaned and standardised 590+ vessel datasets; maintain the weekly demolition vessel register.</li>
         <li><b>Vendors and IT support:</b> compared IT providers and wrote decision reports for management; daily IT support across departments, including PC setup, Windows installation, printers, scanners, routers, network and IP phones.</li>
@@ -342,8 +345,10 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
       <h2><span class="ico"><svg><use href="#i-code"/></svg></span>Projects</h2>
       <table>
         <tr><th style="width:31%">Project</th><th>What it does</th><th style="width:30%">Address</th></tr>
-        <tr class="grp"><td colspan="3">Company Tools<span>Demos: <b>asifur-rahman-ai.github.io</b> + address</span></td></tr>
+        <tr class="grp"><td colspan="3">Company Work<span>Demos: <b>asifur-rahman-ai.github.io</b> + address</span></td></tr>
         <tr><td>Maritime Case Register</td><td>AI-assisted case register with audit log (in progress)</td><td class="url"><a href="https://asifur-rahman-ai.github.io/AI-assisted-maritime-case-register/">/AI-assisted-maritime-case-register</a></td></tr>
+        <!-- কোম্পানির লাইভ ওয়েবসাইট: পুরো ঠিকানা (demo নয়) -->
+        <tr><td>Corporate Website</td><td>Live WordPress site: layouts, counters, client logos, SEO</td><td class="url"><a href="https://assurance-bd.com/">assurance-bd.com</a></td></tr>
         <tr><td>Leave Management System</td><td>Leave requests, manager approval, WhatsApp alerts</td><td class="url"><a href="https://asifur-rahman-ai.github.io/leave-system-demo/">/leave-system-demo</a></td></tr>
         <tr><td>Power of Attorney Generator</td><td>Legal POA documents as PDF and Word</td><td class="url"><a href="https://asifur-rahman-ai.github.io/poa-generator-demo/">/poa-generator-demo</a></td></tr>
         <tr><td>Team File Share</td><td>Internal file sharing</td><td class="url"><a href="https://asifur-rahman-ai.github.io/team-file-share/">/team-file-share</a></td></tr>
