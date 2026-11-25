@@ -424,5 +424,11 @@ tr.grp td span b{font-family:Consolas,'Courier New',monospace;font-weight:600;co
 })();
 </script>
 
+<script>
+/* সব ওয়েব লিংক (http/https) নতুন ট্যাবে খোলে: portfolio-র প্রিভিউর ভেতরেও, CV পাতাতেও।
+   mailto লিংক আগের মতোই থাকে (মেইল অ্যাপ খোলে)। পরে নতুন লিংক যোগ করলেও এটা আপনাআপনি ধরবে। */
+document.querySelectorAll('a[href^="http"]').forEach(a=>{a.target='_blank';a.rel='noopener noreferrer';});
+</script>
+
 </body>
 </html>
